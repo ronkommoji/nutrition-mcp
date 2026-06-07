@@ -1,0 +1,13 @@
+{
+  "name": "nutrition-mcp",
+  "version": "0.2.0",
+  "description": "Conversational calorie and protein tracker: nutrition tools plus an estimate-then-confirm-then-log skill.",
+  "author": {
+    "name": "ronkommoji",
+    "email": "ronkommoji@gmail.com"
+  },
+  "homepage": "https://github.com/ronkommoji/nutrition-mcp#readme",
+  "repository": "https://github.com/ronkommoji/nutrition-mcp",
+  "license": "MIT",
+  "keywords": ["nutrition", "calorie-tracker", "protein-tracker", "mcp"]
+}

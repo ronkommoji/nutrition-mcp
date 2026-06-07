@@ -1,0 +1,14 @@
+{
+  "name": "nutrition-mcp",
+  "owner": {
+    "name": "ronkommoji",
+    "url": "https://github.com/ronkommoji"
+  },
+  "plugins": [
+    {
+      "name": "nutrition-mcp",
+      "source": "./",
+      "description": "Conversational calorie and protein tracker (tools + skill)."
+    }
+  ]
+}
