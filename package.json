@@ -1,0 +1,51 @@
+{
+  "name": "nutrition-mcp",
+  "version": "0.2.0",
+  "description": "Filesystem-based MCP server for conversational calorie and protein tracking. Installs into any MCP-capable agent (Hermes, Claude Code, Codex).",
+  "type": "module",
+  "bin": {
+    "nutrition-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "nutrition",
+    "calorie-tracker",
+    "protein-tracker",
+    "hermes",
+    "claude-code"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronkommoji/nutrition-mcp.git"
+  },
+  "homepage": "https://github.com/ronkommoji/nutrition-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/ronkommoji/nutrition-mcp/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
