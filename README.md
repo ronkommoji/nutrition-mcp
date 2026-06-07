@@ -58,9 +58,9 @@ Claude Code users can install tools **and** the skill in one step:
 
 ## Logging policy
 
-Estimate aggressively, log conservatively. High-confidence estimates can be
-logged directly; medium confidence needs user confirmation; low confidence
-triggers follow-up questions and is never auto-logged.
+The agent estimates calories and protein itself (its own knowledge plus web
+search), shows its assumptions, and logs only after the user confirms.
+`log_food` refuses any entry without `userConfirmed: true`.
 
 ## Storage
 
