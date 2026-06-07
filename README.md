@@ -35,7 +35,7 @@ Claude Code users can install tools **and** the skill in one step:
 
 ## What's included
 
-- **MCP server** — 9 tools + 3 resources (below).
+- **MCP server** — 8 tools + 2 resources (below).
 - **Skill** — [`skills/nutrition-tracking/SKILL.md`](skills/nutrition-tracking/SKILL.md):
   the estimate → confirm → log policy that makes the tools behave well. Auto-loaded
   by the Claude plugin; paste into system instructions / AGENTS.md for other agents.
@@ -44,7 +44,6 @@ Claude Code users can install tools **and** the skill in one step:
 
 - `setup_profile` — create a user profile.
 - `update_profile` — update goals, weight, goal type, or timezone.
-- `estimate_nutrition` — estimate calories and protein without logging.
 - `log_food` — store a confirmed meal.
 - `undo_last_log` — remove the most recent entry.
 - `get_daily_status` — current day progress.
@@ -56,7 +55,6 @@ Claude Code users can install tools **and** the skill in one step:
 
 - `nutrition://user_profile`
 - `nutrition://daily_summary`
-- `nutrition://nutrition_policy`
 
 ## Logging policy
 
@@ -69,36 +67,12 @@ triggers follow-up questions and is never auto-logged.
 Data is stored under `~/.nutrition-mcp/` by default (`profile.json`, `logs/`,
 `weekly/`, `cache/`, `settings.json`). Override with `NUTRITION_MCP_HOME`.
 
-## API keys
+## No API keys
 
-The server works with **no keys** via local fallback. To enable richer lookups,
-pass keys in your agent's MCP `env` block — the client injects them into the
-server process. The server does **not** read a `.env` file.
-
-| Variable | Effect |
-|----------|--------|
-| `GEMINI_API_KEY` | Enables Gemini-based estimation |
-| `FATSECRET_CLIENT_ID` + `FATSECRET_CLIENT_SECRET` | Enables FatSecret lookups (both required) |
-| `NUTRITION_MCP_HOME` | Storage location (default `~/.nutrition-mcp`) |
-
-Example (`.mcp.json` style):
-
-```json
-{
-  "mcpServers": {
-    "nutrition": {
-      "command": "npx",
-      "args": ["-y", "github:ronkommoji/nutrition-mcp"],
-      "env": { "GEMINI_API_KEY": "your-key-here" }
-    }
-  }
-}
-```
-
-**Security:** values in an `env` block are stored in plaintext in the config
-file. Some clients (Claude Code included) expand `${GEMINI_API_KEY}`, letting you
-keep the real secret in your shell environment instead of the file. See the
-per-agent guides in [docs/install/](docs/install/).
+There are none. The agent's own model estimates calories and protein (its
+knowledge plus web search), and the server only stores and reports them. The
+single optional setting is `NUTRITION_MCP_HOME` (storage location, default
+`~/.nutrition-mcp`).
 
 ## Local development
 

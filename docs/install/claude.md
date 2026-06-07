@@ -26,21 +26,14 @@ Claude config:
 }
 ```
 
-## API keys
+## No API keys
 
-Add an `env` block to the server entry to enable richer lookups (omit for local
-fallback). The server does not read a `.env` file.
+None required — the agent estimates nutrition itself. Optionally set
+`NUTRITION_MCP_HOME` in an `env` block to change the storage location:
 
 ```json
-"env": {
-  "GEMINI_API_KEY": "your-key",
-  "FATSECRET_CLIENT_ID": "...",
-  "FATSECRET_CLIENT_SECRET": "..."
-}
+"env": { "NUTRITION_MCP_HOME": "~/.nutrition-mcp" }
 ```
-
-Claude Code expands `${VAR}`, so you can keep the secret in your shell instead of
-the file: `"env": { "GEMINI_API_KEY": "${GEMINI_API_KEY}" }`.
 
 ## Requirements
 

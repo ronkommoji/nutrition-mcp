@@ -19,11 +19,10 @@ Where to put it:
 - **Cursor / Windsurf:** the MCP settings panel or their `mcp.json`.
 - **Other clients:** see your client's MCP configuration docs.
 
-## API keys
+## No API keys
 
-Fill the `env` object with any of `GEMINI_API_KEY`, `FATSECRET_CLIENT_ID`,
-`FATSECRET_CLIENT_SECRET`, `NUTRITION_MCP_HOME`. All optional — the server uses
-local fallback data when they are absent, and it does not read a `.env` file.
+None required — the agent estimates nutrition itself. The only optional `env`
+value is `NUTRITION_MCP_HOME` (storage location).
 
 ## Skill (recommended)
 

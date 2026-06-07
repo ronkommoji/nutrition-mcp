@@ -7,11 +7,9 @@ Codex reads MCP servers from its config (`~/.codex/config.toml`).
 command = "npx"
 args = ["-y", "github:ronkommoji/nutrition-mcp"]
 
-# Optional — works without keys (local fallback):
+# Optional — change the storage location:
 # [mcp_servers.nutrition.env]
-# GEMINI_API_KEY = "..."            # enables Gemini estimation
-# FATSECRET_CLIENT_ID = "..."       # both required for FatSecret
-# FATSECRET_CLIENT_SECRET = "..."
+# NUTRITION_MCP_HOME = "~/.nutrition-mcp"
 ```
 
 Restart Codex so it picks up the new server, then ask it to log or estimate food.

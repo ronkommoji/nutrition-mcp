@@ -10,11 +10,8 @@ Hermes connects to MCP servers via its YAML config (`mcp_servers:` block).
        command: "npx"
        args: ["-y", "github:ronkommoji/nutrition-mcp"]
        enabled: true
-       # env:                      # optional — works without keys (local fallback)
-       #   GEMINI_API_KEY: "..."             # enables Gemini estimation
-       #   FATSECRET_CLIENT_ID: "..."        # both required for FatSecret
-       #   FATSECRET_CLIENT_SECRET: "..."
-       #   NUTRITION_MCP_HOME: "~/.nutrition-mcp"
+       # env:                      # optional
+       #   NUTRITION_MCP_HOME: "~/.nutrition-mcp"   # storage location
    ```
 
 2. Apply it: run `/reload-mcp` in Hermes.
