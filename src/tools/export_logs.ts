@@ -39,18 +39,7 @@ export const exportLogsTool: ToolDefinition = {
 };
 
 function toCsv(logs: DailyLog[]): string {
-  const rows = [
-    [
-      "date",
-      "timestamp",
-      "raw_entry",
-      "calories",
-      "protein",
-      "confidence",
-      "sources",
-      "reasoning"
-    ]
-  ];
+  const rows = [["date", "timestamp", "raw_entry", "calories", "protein", "notes", "source"]];
 
   for (const log of logs) {
     for (const entry of log.entries) {
@@ -60,9 +49,8 @@ function toCsv(logs: DailyLog[]): string {
         entry.rawEntry,
         String(entry.calories),
         String(entry.protein),
-        entry.confidence,
-        entry.sources.join("; "),
-        entry.reasoning
+        entry.notes ?? "",
+        entry.source ?? ""
       ]);
     }
   }

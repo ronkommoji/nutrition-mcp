@@ -1,4 +1,4 @@
-import type { Confidence, EstimateMode, GoalType, ParsedFoodItem } from "../types.js";
+import type { GoalType } from "../types.js";
 
 export function asRecord(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -43,67 +43,6 @@ export function parseGoalType(value: unknown): GoalType {
     return value;
   }
   throw new Error("goalType must be one of: cut, maintain, bulk");
-}
-
-export function parseConfidence(value: unknown, fallback: Confidence): Confidence {
-  if (value === "high" || value === "medium" || value === "low") {
-    return value;
-  }
-  return fallback;
-}
-
-export function parseMode(value: unknown, fallback: EstimateMode): EstimateMode {
-  if (value === "user_provided" || value === "local_usda" || value === "local_branded" || value === "llm_fallback") {
-    return value;
-  }
-  return fallback;
-}
-
-export function optionalStringArray(args: Record<string, unknown>, key: string): string[] | undefined {
-  const value = args[key];
-  if (!Array.isArray(value)) {
-    return undefined;
-  }
-  return value.filter((item): item is string => typeof item === "string" && item.trim() !== "").map((item) => item.trim());
-}
-
-export function optionalItems(args: Record<string, unknown>, key: string): ParsedFoodItem[] | undefined {
-  const value = args[key];
-  if (!Array.isArray(value)) {
-    return undefined;
-  }
-
-  const items = value.flatMap((item) => {
-    if (!item || typeof item !== "object" || Array.isArray(item)) {
-      return [];
-    }
-    const record = item as Record<string, unknown>;
-    if (
-      typeof record.name !== "string" ||
-      typeof record.quantity !== "number" ||
-      typeof record.unit !== "string" ||
-      typeof record.calories !== "number" ||
-      typeof record.protein !== "number" ||
-      typeof record.source !== "string"
-    ) {
-      return [];
-    }
-    return [
-      {
-        name: record.name,
-        quantity: record.quantity,
-        unit: record.unit,
-        calories: record.calories,
-        protein: record.protein,
-        source: record.source,
-        assumptions: Array.isArray(record.assumptions)
-          ? record.assumptions.filter((assumption): assumption is string => typeof assumption === "string")
-          : undefined
-      }
-    ];
-  });
-
-  return items.length > 0 ? items : undefined;
 }
 
 export function todayForTimezone(timezone: string): string {

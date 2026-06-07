@@ -7,7 +7,6 @@ import {
   ListToolsRequestSchema,
   ReadResourceRequestSchema
 } from "@modelcontextprotocol/sdk/types.js";
-import { NUTRITION_POLICY } from "./resources/nutrition_policy.js";
 import { NutritionStorage, currentDateInTimezone } from "./storage/filesystem.js";
 import { tools } from "./tools/index.js";
 
@@ -67,12 +66,6 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => ({
       name: "daily_summary",
       description: "Current day calorie and protein totals.",
       mimeType: "application/json"
-    },
-    {
-      uri: "nutrition://nutrition_policy",
-      name: "nutrition_policy",
-      description: "Accuracy rules and confidence framework.",
-      mimeType: "text/markdown"
     }
   ]
 }));
@@ -116,18 +109,6 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
           uri,
           mimeType: "application/json",
           text: JSON.stringify(summary, null, 2)
-        }
-      ]
-    };
-  }
-
-  if (uri === "nutrition://nutrition_policy") {
-    return {
-      contents: [
-        {
-          uri,
-          mimeType: "text/markdown",
-          text: NUTRITION_POLICY
         }
       ]
     };

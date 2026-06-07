@@ -1,13 +1,5 @@
 export type GoalType = "cut" | "maintain" | "bulk";
 
-export type Confidence = "high" | "medium" | "low";
-
-export type EstimateMode =
-  | "user_provided"
-  | "local_usda"
-  | "local_branded"
-  | "llm_fallback";
-
 export interface UserProfile {
   name?: string;
   weight: {
@@ -22,45 +14,16 @@ export interface UserProfile {
   updatedAt: string;
 }
 
-export interface ParsedFoodItem {
-  name: string;
-  quantity: number;
-  unit: string;
-  calories: number;
-  protein: number;
-  source: string;
-  assumptions?: string[];
-}
-
-export interface NutritionEstimate {
-  rawText: string;
-  calories: number | null;
-  protein: number | null;
-  confidence: Confidence;
-  items: ParsedFoodItem[];
-  reasoning: string;
-  assumptions: string[];
-  sources: string[];
-  clarificationQuestions: string[];
-  mode: EstimateMode;
-  canLogDirectly: boolean;
-  requiresConfirmation: boolean;
-}
-
 export interface FoodLogEntry {
   id: string;
   timestamp: string;
   date: string;
   rawEntry: string;
-  items: ParsedFoodItem[];
   calories: number;
   protein: number;
-  confidence: Confidence;
-  sources: string[];
-  reasoning: string;
-  assumptions: string[];
   userConfirmed: boolean;
-  mode: EstimateMode;
+  notes?: string;
+  source?: string;
 }
 
 export interface DailyLog {

@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-import { estimateNutritionFromText } from "../providers/llm_fallback.js";
 import type { FoodLogEntry } from "../types.js";
 import type { ToolDefinition } from "./tool.js";
 import {
@@ -7,12 +6,8 @@ import {
   assertDateKey,
   jsonSchema,
   optionalBoolean,
-  optionalItems,
-  optionalNumber,
   optionalString,
-  optionalStringArray,
-  parseConfidence,
-  parseMode,
+  requiredNumber,
   requiredString,
   roundProtein,
   todayForTimezone
@@ -20,75 +15,55 @@ import {
 
 export const logFoodTool: ToolDefinition = {
   name: "log_food",
-  description: "Store a confirmed food entry in the filesystem daily log.",
+  description:
+    "Store a confirmed food entry. The agent supplies calories and protein (estimated with its own knowledge or web search). Requires userConfirmed: true.",
   inputSchema: jsonSchema(
     {
-      rawEntry: { type: "string", description: "Original user food entry." },
-      calories: { type: "number", description: "Calories to log. If omitted, the server estimates first." },
-      protein: { type: "number", description: "Protein grams to log. If omitted, the server estimates first." },
-      confidence: { type: "string", enum: ["high", "medium", "low"] },
-      reasoning: { type: "string" },
-      sources: { type: "array", items: { type: "string" } },
-      assumptions: { type: "array", items: { type: "string" } },
-      items: { type: "array", items: { type: "object" } },
-      userConfirmed: { type: "boolean", description: "Whether the user confirmed an estimate before logging." },
+      rawEntry: { type: "string", description: "Food description, e.g. '2 eggs and toast'." },
+      calories: { type: "number", description: "Calories to log." },
+      protein: { type: "number", description: "Protein grams to log." },
+      userConfirmed: {
+        type: "boolean",
+        description: "Must be true; the user confirmed the estimate before logging."
+      },
+      notes: { type: "string", description: "Optional assumptions or context, e.g. 'assumed 2 large eggs'." },
+      source: { type: "string", description: "Optional source, e.g. a URL used to estimate." },
       date: { type: "string", description: "YYYY-MM-DD date. Defaults to today in the profile timezone." },
-      timestamp: { type: "string", description: "ISO timestamp. Defaults to now." },
-      mode: { type: "string", enum: ["user_provided", "local_usda", "local_branded", "llm_fallback"] }
+      timestamp: { type: "string", description: "ISO timestamp. Defaults to now." }
     },
-    ["rawEntry"]
+    ["rawEntry", "calories", "protein", "userConfirmed"]
   ),
   async handler(rawArgs, { storage }) {
     const args = asRecord(rawArgs);
     const rawEntry = requiredString(args, "rawEntry");
+    const calories = requiredNumber(args, "calories");
+    const protein = requiredNumber(args, "protein");
+    const userConfirmed = optionalBoolean(args, "userConfirmed") ?? false;
+
+    if (!userConfirmed) {
+      return {
+        logged: false,
+        reason: "log_food requires userConfirmed: true. Confirm the estimate with the user first."
+      };
+    }
+
     const profile = await storage.readProfile();
     const timezone = profile?.timezone ?? "UTC";
     const date = assertDateKey(optionalString(args, "date") ?? todayForTimezone(timezone));
     const timestamp = optionalString(args, "timestamp") ?? new Date().toISOString();
-    const estimate = estimateNutritionFromText(rawEntry);
-
-    const calories = optionalNumber(args, "calories") ?? estimate.calories;
-    const protein = optionalNumber(args, "protein") ?? estimate.protein;
-    const userConfirmed = optionalBoolean(args, "userConfirmed") ?? false;
-    const confidence = parseConfidence(args.confidence, estimate.confidence);
-    const sources = optionalStringArray(args, "sources") ?? estimate.sources;
-    const assumptions = optionalStringArray(args, "assumptions") ?? estimate.assumptions;
-    const items = optionalItems(args, "items") ?? estimate.items;
-    const reasoning = optionalString(args, "reasoning") ?? estimate.reasoning;
-    const mode = parseMode(args.mode, estimate.mode);
-
-    if (calories === null || protein === null) {
-      return {
-        logged: false,
-        reason: "Nutrition values were not reliable enough to log.",
-        estimate,
-        clarificationQuestions: estimate.clarificationQuestions
-      };
-    }
-
-    if (confidence !== "high" && !userConfirmed) {
-      return {
-        logged: false,
-        reason: "Medium and low confidence estimates require user confirmation before logging.",
-        estimate,
-        clarificationQuestions: estimate.clarificationQuestions
-      };
-    }
+    const notes = optionalString(args, "notes");
+    const source = optionalString(args, "source");
 
     const entry: FoodLogEntry = {
       id: randomUUID(),
       timestamp,
       date,
       rawEntry,
-      items,
       calories: Math.round(calories),
       protein: roundProtein(protein),
-      confidence,
-      sources,
-      reasoning,
-      assumptions,
-      userConfirmed: userConfirmed || confidence === "high",
-      mode
+      userConfirmed: true,
+      ...(notes ? { notes } : {}),
+      ...(source ? { source } : {})
     };
 
     const dailyLog = await storage.appendFoodLog(date, entry);

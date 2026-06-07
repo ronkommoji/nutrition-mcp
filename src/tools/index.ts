@@ -1,4 +1,3 @@
-import { estimateNutritionTool } from "./estimate_nutrition.js";
 import { exportLogsTool } from "./export_logs.js";
 import { getDailyStatusTool } from "./get_daily_status.js";
 import { getWeeklySummaryTool } from "./get_weekly_summary.js";
@@ -12,7 +11,6 @@ import { updateProfileTool } from "./update_profile.js";
 export const tools: ToolDefinition[] = [
   setupProfileTool,
   updateProfileTool,
-  estimateNutritionTool,
   logFoodTool,
   undoLastLogTool,
   getDailyStatusTool,

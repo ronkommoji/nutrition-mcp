@@ -41,11 +41,7 @@ export const searchFoodHistoryTool: ToolDefinition = {
 };
 
 function scoreEntry(entry: FoodLogEntry, terms: string[]): number {
-  const haystack = [
-    entry.rawEntry,
-    ...entry.items.map((item) => item.name),
-    ...entry.sources
-  ]
+  const haystack = [entry.rawEntry, entry.notes ?? "", entry.source ?? ""]
     .join(" ")
     .toLowerCase();
 
