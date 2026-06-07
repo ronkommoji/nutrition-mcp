@@ -19,11 +19,11 @@ Where to put it:
 - **Cursor / Windsurf:** the MCP settings panel or their `mcp.json`.
 - **Other clients:** see your client's MCP configuration docs.
 
-## Optional provider keys
+## API keys
 
-Fill the `env` object with any of `USDA_API_KEY`, `FATSECRET_CLIENT_ID`,
-`FATSECRET_CLIENT_SECRET`, `GEMINI_API_KEY`, `NUTRITION_MCP_HOME`. All optional —
-the server uses local fallback data when they are absent.
+Fill the `env` object with any of `GEMINI_API_KEY`, `FATSECRET_CLIENT_ID`,
+`FATSECRET_CLIENT_SECRET`, `NUTRITION_MCP_HOME`. All optional — the server uses
+local fallback data when they are absent, and it does not read a `.env` file.
 
 ## Skill (recommended)
 

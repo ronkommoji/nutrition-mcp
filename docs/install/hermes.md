@@ -11,10 +11,9 @@ Hermes connects to MCP servers via its YAML config (`mcp_servers:` block).
        args: ["-y", "github:ronkommoji/nutrition-mcp"]
        enabled: true
        # env:                      # optional — works without keys (local fallback)
-       #   USDA_API_KEY: "..."
-       #   FATSECRET_CLIENT_ID: "..."
+       #   GEMINI_API_KEY: "..."             # enables Gemini estimation
+       #   FATSECRET_CLIENT_ID: "..."        # both required for FatSecret
        #   FATSECRET_CLIENT_SECRET: "..."
-       #   GEMINI_API_KEY: "..."
        #   NUTRITION_MCP_HOME: "~/.nutrition-mcp"
    ```
 

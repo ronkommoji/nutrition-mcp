@@ -69,11 +69,36 @@ triggers follow-up questions and is never auto-logged.
 Data is stored under `~/.nutrition-mcp/` by default (`profile.json`, `logs/`,
 `weekly/`, `cache/`, `settings.json`). Override with `NUTRITION_MCP_HOME`.
 
-## Optional provider API keys
+## API keys
 
-The server works with no keys via local fallback. To enable external lookups,
-set any of `USDA_API_KEY`, `FATSECRET_CLIENT_ID`, `FATSECRET_CLIENT_SECRET`,
-`GEMINI_API_KEY` in your agent's MCP `env` config (see the install guides).
+The server works with **no keys** via local fallback. To enable richer lookups,
+pass keys in your agent's MCP `env` block — the client injects them into the
+server process. The server does **not** read a `.env` file.
+
+| Variable | Effect |
+|----------|--------|
+| `GEMINI_API_KEY` | Enables Gemini-based estimation |
+| `FATSECRET_CLIENT_ID` + `FATSECRET_CLIENT_SECRET` | Enables FatSecret lookups (both required) |
+| `NUTRITION_MCP_HOME` | Storage location (default `~/.nutrition-mcp`) |
+
+Example (`.mcp.json` style):
+
+```json
+{
+  "mcpServers": {
+    "nutrition": {
+      "command": "npx",
+      "args": ["-y", "github:ronkommoji/nutrition-mcp"],
+      "env": { "GEMINI_API_KEY": "your-key-here" }
+    }
+  }
+}
+```
+
+**Security:** values in an `env` block are stored in plaintext in the config
+file. Some clients (Claude Code included) expand `${GEMINI_API_KEY}`, letting you
+keep the real secret in your shell environment instead of the file. See the
+per-agent guides in [docs/install/](docs/install/).
 
 ## Local development
 

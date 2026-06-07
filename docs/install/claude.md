@@ -26,14 +26,21 @@ Claude config:
 }
 ```
 
-## Optional provider keys
+## API keys
 
-Add an `env` block to the server entry to enable USDA/FatSecret/Gemini lookups
-(omit for local fallback):
+Add an `env` block to the server entry to enable richer lookups (omit for local
+fallback). The server does not read a `.env` file.
 
 ```json
-"env": { "USDA_API_KEY": "...", "GEMINI_API_KEY": "..." }
+"env": {
+  "GEMINI_API_KEY": "your-key",
+  "FATSECRET_CLIENT_ID": "...",
+  "FATSECRET_CLIENT_SECRET": "..."
+}
 ```
+
+Claude Code expands `${VAR}`, so you can keep the secret in your shell instead of
+the file: `"env": { "GEMINI_API_KEY": "${GEMINI_API_KEY}" }`.
 
 ## Requirements
 
