@@ -1,6 +1,6 @@
 {
   "name": "nutrition-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Conversational calorie and protein tracker: nutrition tools plus an estimate-then-confirm-then-log skill.",
   "author": {
     "name": "ronkommoji",
